@@ -6,6 +6,8 @@ import dev.lipco.entities.Client;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.*;
 
+import java.util.Set;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ClientDaoTests {
     private static ClientDAO cdao = new PsqlClientDAO();
@@ -18,8 +20,8 @@ public class ClientDaoTests {
     void create_client() {
         Client em = new Client(0,"Elon", "Musk");
         cdao.createClient(em);
-        ClientDaoTests.testClient = em;
         System.out.println(em);
+        testClient = em;
         Assertions.assertNotEquals(0, em.getId());
     }
 }
