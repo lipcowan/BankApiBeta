@@ -1,16 +1,18 @@
 package dev.lipco.controllers;
 
 import com.google.gson.Gson;
+import dev.lipco.daos.PsqlClientDAO;
 import dev.lipco.entities.Client;
 import dev.lipco.exceptions.InvalidUpdate;
 import dev.lipco.services.ClientService;
+import dev.lipco.services.ClientServiceImpl;
 import io.javalin.http.Handler;
 
 import java.util.Set;
 
 public class ClientController {
     private Gson gson = new Gson();
-    private ClientService cserv;
+    private ClientService cserv = new ClientServiceImpl(new PsqlClientDAO());
 
     public ClientController(ClientService clientService) {
         this.cserv = clientService;
@@ -18,7 +20,7 @@ public class ClientController {
 
     public Handler createClient = (ctx) -> {
       Client client = this.gson.fromJson(ctx.body(), Client.class);
-      client = this.cserv.createClient(client);
+      this.cserv.createClient(client);
       String clientJSON = gson.toJson(client);
       ctx.status(201);
       ctx.result(clientJSON);
@@ -26,6 +28,7 @@ public class ClientController {
 
     public Handler getAllClients = (ctx) -> {
       Set<Client> clients = this.cserv.getAllClients();
+      Gson gson = new Gson();
       String clientsJSON = this.gson.toJson(clients);
       ctx.status(200);
       ctx.result(clientsJSON);
@@ -34,13 +37,20 @@ public class ClientController {
     public Handler getClientById = (ctx) -> {
       int id = Integer.parseInt(ctx.pathParam("id"));
       Client client = this.cserv.getClientById(id);
-      String clientJSON = this.gson.toJson(client);
-      ctx.status(200);
-      ctx.result(clientJSON);
+      if(client == null){
+          ctx.result("Client not found");
+          ctx.status(404);
+      }else {
+          String clientJSON = this.gson.toJson(client);
+          ctx.status(200);
+          ctx.result(clientJSON);
+      }
     };
 
     public Handler updateClient = (ctx) -> {
       int id = Integer.parseInt(ctx.pathParam("id"));
+      String body = ctx.body();
+      Gson gson = new Gson();
       Client client = this.gson.fromJson(ctx.body(), Client.class);
       client.setId(id);
       try {

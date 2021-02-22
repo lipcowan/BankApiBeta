@@ -2,13 +2,14 @@ package dev.lipco.services;
 
 import dev.lipco.daos.ClientDAO;
 import dev.lipco.entities.Client;
-import dev.lipco.exceptions.InvalidUpdate;
-//import org.apache.logging.log4j.*;
+import org.apache.log4j.Logger;
 
 import java.util.Set;
 
 public class ClientServiceImpl implements ClientService {
-//    static LogBuilder logBuilder = LogBuilder.NOOP(ClientServiceImpl.class.getName());
+
+    private static Logger logger = Logger.getLogger(ClientServiceImpl.class.getName());
+
     private ClientDAO cdao;
     public ClientServiceImpl(ClientDAO clientDAO){
         this.cdao = clientDAO;

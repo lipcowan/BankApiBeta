@@ -1,77 +1,53 @@
 package dev.lipco.entities;
 
+import java.math.BigDecimal;
+
 public class Account {
-    // setting up account class with accountID, balance, open boolean for easy searches, and customerID foreign key
-    private int accountId;
-//    account type - 0 - savings, 1 - checking
-//    private int accountType;
-    private long activationDate;
-    private double accountBalance;
-    private boolean isOpen;
-    private int customerId;
+    private int id;
+    private BigDecimal balance;
+    private int cId;
 
     // empty constructor
     public Account() {
-
     }
 
-    public Account(int accountId, long activationDate, double accountBalance, boolean isOpen, int customerId) {
-        this.accountId = accountId;
-        this.activationDate = activationDate;
-        this.accountBalance = accountBalance;
-        this.isOpen = isOpen;
-        this.customerId = customerId;
+    public Account(int accountId, BigDecimal accountBalance, int customerId) {
+        this.id = accountId;
+        this.balance = accountBalance;
+        this.id = customerId;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public int getId() {
+        return id;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public long getActivationDate() {
-        return activationDate;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setActivationDate(long activationDate) {
-        this.activationDate = activationDate;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
-    public double getAccountBalance() {
-        return accountBalance;
+    public int getcId() {
+        return cId;
     }
 
-    public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(boolean open) {
-        isOpen = open;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setcId(int cId) {
+        this.cId = cId;
     }
 
     // to get account details - overriding the toString method
     @Override
     public String toString() {
         return "Account{" +
-                ", accountId= " + accountId +
-                ", activationDate= " + activationDate +
-                ", accountBalance= " + accountBalance +
-                ", isOpen= " + isOpen +
-                ", customerId= " + customerId +
+                ", accountId= " + id +
+                ", accountBalance= " + balance +
+                ", customerId= " + cId +
                 '}';
     }
 
