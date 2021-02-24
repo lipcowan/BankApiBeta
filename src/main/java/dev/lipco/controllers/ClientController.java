@@ -31,15 +31,18 @@ public class ClientController {
       Set<Client> clients = this.cserv.getAllClients();
       Gson gson = new Gson();
       String clientsJSON = this.gson.toJson(clients);
-      ctx.status(200);
-      ctx.result(clientsJSON);
+      if(clients == null){ctx.result("Currently no clients exist"); ctx.status(404);}
+      else{
+          ctx.status(200);
+          ctx.result(clientsJSON);
+      }
     };
 
     public Handler getClientById = (ctx) -> {
       int id = Integer.parseInt(ctx.pathParam("id"));
       Client client = this.cserv.getClientById(id);
       if(client == null){
-          ctx.result("Client not found");
+          ctx.result("Client with " + id + " not found");
           ctx.status(404);
       }else {
           String clientJSON = this.gson.toJson(client);
@@ -67,8 +70,15 @@ public class ClientController {
 
     public Handler deleteClient = (ctx) -> {
       int id = Integer.parseInt(ctx.pathParam("id"));
+
+      Client client = this.cserv.getClientById(id);
+      if(client == null) {
+          ctx.result("Account doesn't exist");
+          ctx.status(404);
+      }
+
       boolean result = this.cserv.deleteClientById(id);
-      ctx.status(result? 204 : 404);
+      ctx.status(204);
     };
 
 }

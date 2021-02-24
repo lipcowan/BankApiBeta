@@ -18,16 +18,20 @@ public class AccountController {
 
     public AccountController(AccountService accountService) {this.aServ = accountService;}
 
+    // checking for accounts with specific client, need cId (client_id)
     public Handler getAllAccounts = (ctx) -> {
         int cId = Integer.parseInt(ctx.pathParam("cId"));
         String minVal = ctx.queryParam("minBalance", "NONE");
         String maxVal = ctx.queryParam("maxBalance", "NONE");
         Set<Account> allAccounts = this.aServ.getAccountsByClient(cId);
         Gson gson = new Gson();
+        if(allAccounts == null) {
+            ctx.result("Currently client " + cId + " doesn't have any accounts with us");
+            ctx.status(404);
+        }
         if(minVal.equals("NONE") && maxVal.equals("NONE")) {
             String accountsJSON = gson.toJson(allAccounts);
             ctx.result(accountsJSON);
-            ctx.status(200);
         }else {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setGroupingSeparator(',');
@@ -40,8 +44,8 @@ public class AccountController {
             Set<Account> accounts = this.aServ.getClientAccountsWithinRange(cId, min, max);
             String accountsWithinRange = gson.toJson(accounts);
             ctx.result(accountsWithinRange);
-            ctx.status(200);
         }
+        ctx.status(200);
     };
 
     public Handler getAccountsById = (ctx) -> {
