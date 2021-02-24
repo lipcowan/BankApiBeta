@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account activateAccount(Account account) {
+    public Account createAccount(Account account) {
         this.adao.createAccount(account);
         return account;
     }
@@ -35,17 +35,20 @@ public class AccountServiceImpl implements AccountService {
         return clientAccounts;
     }
 
-    @Override
-    public Set<Account> getAccountsByBalance(BigDecimal balance) {
-        Set<Account> allAccounts = this.adao.getAllAccounts();
-        Set<Account> selectedAccounts = new HashSet<Account>();
 
-        for(Account a : allAccounts) {
-            if(a.getBalance().equals(balance)) {
+    @Override
+    public Set<Account> getClientAccountsWithinRange(int cId, BigDecimal minBalance, BigDecimal maxBalance) {
+        Set<Account> clientAccounts = this.getAccountsByClient(cId);
+        Set<Account> selectedAccounts = new HashSet<Account>();
+        for(Account a : clientAccounts) {
+            BigDecimal bal = a.getBalance();
+            int checkMin = bal.compareTo(minBalance); // we don't want -1, 0 means equal and 1 means bal is greater than min
+            int checkMax = bal.compareTo(maxBalance); // we don't want 1, 0 means equal and -1 means bal is less than max
+            if(checkMin >= 0 && checkMax <= 0){
                 selectedAccounts.add(a);
             }
         }
-        return selectedAccounts;
+             return selectedAccounts;
     }
 
     @Override

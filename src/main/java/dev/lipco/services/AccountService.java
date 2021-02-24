@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 public interface AccountService {
-    Account activateAccount(Account account);
+    Account createAccount(Account account);
 
     Set<Account> getAccountsByClient(int cId);
-    Set<Account> getAccountsByBalance(BigDecimal balance);
+    Set<Account> getClientAccountsWithinRange(int cId, BigDecimal minBalance, BigDecimal maxBalance);
     Account getAccountById(int id);
 
     Account updateAccount(Account account);

@@ -14,7 +14,7 @@ public class PsqlAccountDAO implements AccountDAO {
     @Override
     public Account createAccount(Account account) {
         try(Connection conn = ConnectionUtil.createConnection()){
-            String sql = "insert into account (balance, c_id) values (?,?)";
+            String sql = "insert into account (balance, client_id) values (?,?)";
             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setBigDecimal(1, account.getBalance());
             ps.setInt(2, account.getcId());
