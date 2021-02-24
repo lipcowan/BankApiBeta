@@ -1,7 +1,6 @@
 package dev.lipco.daos;
 
 import dev.lipco.entities.Client;
-import dev.lipco.services.ClientServiceImpl;
 import dev.lipco.utils.ConnectionUtil;
 
 import java.sql.*;

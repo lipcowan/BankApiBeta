@@ -3,7 +3,8 @@ package dev.lipco.controllers;
 import com.google.gson.Gson;
 import dev.lipco.daos.PsqlClientDAO;
 import dev.lipco.entities.Client;
-import dev.lipco.exceptions.InvalidUpdate;
+import dev.lipco.exceptions.InvalidUpdateException;
+import dev.lipco.exceptions.ClientIdNotFoundException;
 import dev.lipco.services.ClientService;
 import dev.lipco.services.ClientServiceImpl;
 import io.javalin.http.Handler;
@@ -58,7 +59,7 @@ public class ClientController {
           String clientJSON = this.gson.toJson(client);
           ctx.status(200);
           ctx.result(clientJSON);
-      } catch (InvalidUpdate e) {
+      } catch (InvalidUpdateException e) {
           ctx.status(400);
           ctx.result("Client cannot be updated");
       }

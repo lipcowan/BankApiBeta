@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.math.BigDecimal;
 
 public class PsqlAccountDAO implements AccountDAO {
     private Logger logger = Logger.getLogger(PsqlAccountDAO.class.getName());
