@@ -2,7 +2,10 @@ package dev.lipco.daotests;
 
 import dev.lipco.daos.AccountDAO;
 import dev.lipco.daos.PsqlAccountDAO;
+import dev.lipco.daos.ClientDAO;
+import dev.lipco.daos.PsqlClientDAO;
 import dev.lipco.entities.Account;
+import dev.lipco.entities.Client;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.*;
 
@@ -14,16 +17,23 @@ import java.util.HashSet;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountDaoTests {
     private static AccountDAO adao = new PsqlAccountDAO();
+    private static ClientDAO cdao = new PsqlClientDAO();
     private static Account testAccount = null;
+    private static Client testClient = null;
     static Logger logger = Logger.getLogger(AccountDaoTests.class.getName());
 
     @Test
     @Order(1)
     void create_account() {
+        Client elon = new Client();
+        elon.setFirstName("Elon");
+        elon.setLastName("Musk");
+        cdao.createClient(elon);
+        testClient = elon;
         Account elonAccount = new Account();
         BigDecimal accountBalance = new BigDecimal("1500.00");
         elonAccount.setBalance(accountBalance);
-        elonAccount.setcId(10);
+        elonAccount.setcId(elon.getId());
         adao.createAccount(elonAccount);
         System.out.println(elonAccount);
         testAccount = elonAccount;
